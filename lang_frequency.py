@@ -2,18 +2,27 @@ import sys
 import operator
 import re
 
+from collections import Counter
+
 
 def load_data(filepath):
     with open(filepath) as data_file:
         return data_file.read()
 
 
+def get_text_lower_words(text):
+    return text.lower()
+
+
+def get_list_words(text):
+    return re.findall(r'[а-яёЁА-ЯA-z\']+', get_text_lower_words(text))
+
+
 def get_dict(text):
-    data = re.findall(r'[а-яёЁА-ЯA-z\']+', text)
-    word_dict = {}
-    for word in data:
-        word_dict[word] = word_dict.get(word, 0) + 1
-    return word_dict
+    word_dict = Counter()
+    for word in get_list_words(text):
+        word_dict[word] += 1
+    return dict(word_dict)
 
 
 def sort_dict(text_dict):
